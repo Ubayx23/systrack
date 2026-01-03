@@ -26,7 +26,13 @@ SysTrack's goal is to demonstrate how automation and scripting can make IT work 
 - Save all collected data into a timestamped file under `/reports`
 - Support for both text and JSON output formats
 
-✅ **CLI Commands**
+✅ **Web Interface with Terminal UI**
+- Interactive terminal-like web interface
+- Type commands directly in the browser
+- Real-time system diagnostics
+- Command history with arrow keys
+
+✅ **CLI Commands** (Original)
 - Simple command flags (`--summary`, `--detailed`)
 - Optional JSON export with `--json` flag
 
@@ -70,6 +76,35 @@ This is the recommended approach, especially on macOS with Homebrew Python:
    deactivate
    ```
 
+## Running the Web Application
+
+After installation, you can run the web interface:
+
+1. **Activate your virtual environment** (if not already active):
+   ```bash
+   source venv/bin/activate
+   ```
+
+2. **Start the Flask web server:**
+   ```bash
+   python app.py
+   ```
+
+3. **Open your browser** and navigate to:
+   ```
+   http://localhost:5000
+   ```
+
+4. **Use the terminal interface:**
+   - Type `help` to see available commands
+   - Type `summary` for a quick system report
+   - Type `detailed` for a comprehensive report
+   - Type `ping [host]` to test network connectivity
+   - Use arrow keys to navigate command history
+   - Type `clear` to clear the terminal
+
+The web interface provides a terminal-like experience where you can interact with SysTrack directly in your browser!
+
 ### Option 2: User Installation (Alternative)
 
 If you prefer not to use a virtual environment:
@@ -95,7 +130,23 @@ bash setup.sh
 
 ## Usage
 
-### Basic Usage
+### Web Interface (Recommended)
+
+Start the web server and use the interactive terminal:
+```bash
+python app.py
+```
+
+Then open `http://localhost:5000` in your browser.
+
+**Available Commands:**
+- `help` - Show available commands
+- `summary` - Generate summary system report
+- `detailed` - Generate detailed system report
+- `ping [host]` - Test network connectivity
+- `clear` - Clear the terminal screen
+
+### CLI Usage (Original)
 
 **Summary Report:**
 ```bash
@@ -107,7 +158,7 @@ python3 src/systrack.py --summary
 python3 src/systrack.py --detailed
 ```
 
-### Advanced Options
+### Advanced CLI Options
 
 **Export as JSON:**
 ```bash
@@ -178,22 +229,34 @@ Report saved: reports/sysreport_2026-01-02_14-32.txt
 
 ```
 systrack/
+├── app.py                # Flask web application entry point
 ├── src/
-│   ├── systrack.py       # main entry point for CLI
+│   ├── systrack.py       # CLI entry point
 │   ├── system_info.py    # collects CPU, memory, disk stats
 │   ├── network_check.py  # tests network connectivity
 │   ├── report_writer.py  # saves results to /reports
 │   └── __init__.py
+├── templates/
+│   └── index.html        # Web terminal interface
+├── static/
+│   ├── css/
+│   │   └── terminal.css  # Terminal styling
+│   └── js/
+│       └── terminal.js   # Terminal interaction logic
 ├── reports/              # auto-generated reports
 ├── requirements.txt
+├── setup.sh              # Setup script (macOS/Linux)
+├── setup.bat             # Setup script (Windows)
 └── README.md
 ```
 
 ## Tech Stack
 
 - **Language:** Python 3
+- **Web Framework:** Flask
 - **Libraries:**
   - `psutil` - System stats (CPU, memory, disk)
+  - `Flask` - Web framework for terminal interface
   - `platform` - OS info
   - `subprocess` - Ping commands
   - `json` - JSON file export
