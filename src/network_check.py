@@ -140,8 +140,8 @@ def run_ookla_speedtest() -> Dict[str, Any]:
     try:
         import speedtest
         
-        # Create speedtest client
-        st = speedtest.Speedtest()
+        # Create speedtest client with secure=True to use HTTPS (prevents 403 errors)
+        st = speedtest.Speedtest(secure=True)
         
         # Get list of all servers
         st.get_servers()
@@ -203,10 +203,23 @@ def run_ookla_speedtest() -> Dict[str, Any]:
             'error': 'speedtest-cli not installed. Run: pip install speedtest-cli'
         }
     except Exception as e:
-        return {
-            'success': False,
-            'error': f'Speedtest failed: {str(e)}'
-        }
+        error_msg = str(e)
+        # Check for common HTTP errors
+        if '403' in error_msg or 'Forbidden' in error_msg:
+            return {
+                'success': False,
+                'error': 'HTTP 403 Forbidden - Ookla servers blocked the request. This may be temporary, please try again later.'
+            }
+        elif 'HTTPSConnectionPool' in error_msg or 'Connection' in error_msg:
+            return {
+                'success': False,
+                'error': 'Connection error - Unable to reach Ookla servers. Check your internet connection.'
+            }
+        else:
+            return {
+                'success': False,
+                'error': f'Speedtest failed: {error_msg}'
+            }
         
 
 
@@ -227,14 +240,19 @@ def format_speedtest_results(speedtest_info: Dict[str, Any]) -> str:
     lines = [
         "",
         "=== Ookla Speedtest Results ===",
-        f"Server: {server['name']}",
-        f"Provider: {server['sponsor']}",
-        f"Location: {server.get('city', server['name'])}, {server['country']}",
-        f"Distance: {server['distance']} km",
         "",
-        f"Ping: {speedtest_info['ping_ms']} ms",
-        f"Download Speed: {speedtest_info['download_mbps']} Mbps",
-        f"Upload Speed: {speedtest_info['upload_mbps']} Mbps",
+        "⚠️  DISCLAIMER: Results are estimates based on the test server selected.",
+        "   Server location/provider may not reflect your actual location/ISP.",
+        "",
+        f"Test Server: {server['name']}",
+        f"Server Provider: {server['sponsor']}",
+        f"Server Location: {server.get('city', server['name'])}, {server['country']}",
+        f"Distance to Server: {server['distance']} km",
+        "",
+        "Network Performance:",
+        f"  Ping: {speedtest_info['ping_ms']} ms",
+        f"  Download Speed: {speedtest_info['download_mbps']} Mbps",
+        f"  Upload Speed: {speedtest_info['upload_mbps']} Mbps",
     ]
     
     return "\n".join(lines)

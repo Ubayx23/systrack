@@ -1,0 +1,28 @@
+SysTrack Diagnostic Report - 2026-01-02
+---------------------------------------
+
+=== System Information ===
+Operating System: Darwin 25.1.0
+OS Version: Darwin Kernel Version 25.1.0: Mon Oct 20 19:26:04 PDT 2025; root:xnu-12377.41.6~2/RELEASE_ARM64_T8122
+Platform: macOS-26.1-arm64-arm-64bit-Mach-O
+
+=== CPU Information ===
+CPU Usage: 30.3%
+CPU Cores: 8
+
+=== Memory Information ===
+Memory Usage: 78.0%
+Total Memory: 16.0 GB
+Used Memory: 5.75 GB
+Available Memory: 3.52 GB
+
+=== Disk Information ===
+Disk Usage: 2.1%
+Total Disk Space: 926.35 GB
+Used Disk Space: 11.35 GB
+Free Disk Space: 538.21 GB
+
+=== Network Diagnostics ===
+Host Tested: google.com
+Status: Online
+Message: Online (Ping google.com: Success)

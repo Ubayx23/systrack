@@ -45,7 +45,7 @@ def execute_command():
         elif cmd == 'detailed':
             output = run_detailed_report()
         elif cmd == 'ping':
-            output = run_ping(None)
+            output = run_ping() # Run Ookla speedtest
         elif cmd == 'clear' or cmd == 'cls':
             output = 'CLEAR_SCREEN'
         else:
@@ -105,7 +105,7 @@ def run_detailed_report():
         return f"Error generating report: {str(e)}"
 
 
-def run_ping(host):
+def run_ping(host=None):
     """Run ping test and Ookla speedtest for detailed network diagnostics."""
     try:
         result_lines = []
@@ -113,6 +113,8 @@ def run_ping(host):
         # If ping succeeded, run Ookla speedtest for detailed stats
         result_lines.append("Running network speed test...")
         result_lines.append("This may take 30-60 seconds, please wait...")
+        result_lines.append("")
+        result_lines.append("Note: Results show the test server location, which may differ from your actual location.")
         result_lines.append("")
         
         speedtest_info = run_ookla_speedtest()
