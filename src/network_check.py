@@ -102,7 +102,10 @@ def format_network_info_summary(network_info: Dict[str, Any]) -> str:
     Returns:
         Formatted summary string.
     """
-    return f"Network: {network_info['message']}"
+    if network_info.get('online') and network_info.get('latency_ms') is not None:
+        return f"Network: {network_info['message']}\nPing Time: {network_info['latency_ms']:.0f} ms"
+    else:
+        return f"Network: {network_info['message']}"
 
 
 def format_network_info_detailed(network_info: Dict[str, Any]) -> str:
@@ -122,9 +125,10 @@ def format_network_info_detailed(network_info: Dict[str, Any]) -> str:
     ]
     
     if network_info['latency_ms'] is not None:
-        lines.append(f"Latency: {network_info['latency_ms']:.2f} ms")
+        lines.append(f"Ping Time: {network_info['latency_ms']:.2f} ms")
     
     lines.append(f"Message: {network_info['message']}")
+    lines.append("")  # Add trailing newline for consistency
     
     return "\n".join(lines)
 

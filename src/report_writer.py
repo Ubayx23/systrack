@@ -125,7 +125,7 @@ def format_report(
     Returns:
         Formatted report string.
     """
-    from system_info import format_system_info_summary, format_system_info_detailed
+    from system_info import format_system_info_summary, format_system_info_detailed, generate_summary_line
     from network_check import format_network_info_summary, format_network_info_detailed
     
     date_header = generate_date_header()
@@ -140,8 +140,15 @@ def format_report(
     header = f"SysTrack Diagnostic Report - {date_header}"
     separator = "-" * len(header)
     
+    # Generate summary line
+    summary_line = generate_summary_line(system_info, network_info)
+    
     lines = [
         header,
+        separator,
+        "",
+        f"System Status: {summary_line}",
+        "",
         separator,
         "",
         system_text,
