@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysTrack Terminal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/terminal.css') }}">
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <span class="btn btn-close"></span>
+                <span class="btn btn-minimize"></span>
+                <span class="btn btn-maximize"></span>
+            </div>
+            <div class="terminal-title">SysTrack Terminal</div>
+        </div>
+        <div class="terminal-body" id="terminal">
+            <div class="terminal-output" id="output">
+                <div class="terminal-line">
+                    <span class="prompt">SysTrack v1.0.0</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">Type 'help' for available commands</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+                </div>
+            </div>
+            <div class="terminal-input-line">
+                <span class="prompt">systrack@localhost:~$</span>
+                <input type="text" class="terminal-input" id="commandInput" autocomplete="off" autofocus>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/terminal.js') }}"></script>
+</body>
+</html>
+

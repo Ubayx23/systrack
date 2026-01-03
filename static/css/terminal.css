@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Courier New', monospace;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.terminal-container {
+    width: 100%;
+    max-width: 1200px;
+    height: 90vh;
+    background: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.terminal-header {
+    background: #2d2d2d;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.terminal-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.btn-close {
+    background: #ff5f56;
+}
+
+.btn-minimize {
+    background: #ffbd2e;
+}
+
+.btn-maximize {
+    background: #27c93f;
+}
+
+.terminal-title {
+    flex: 1;
+    text-align: center;
+    color: #d4d4d4;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-output {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.terminal-line {
+    margin-bottom: 4px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.prompt {
+    color: #4ec9b0;
+    font-weight: 500;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #d4d4d4;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    caret-color: #4ec9b0;
+}
+
+.terminal-input::placeholder {
+    color: #6a6a6a;
+}
+
+/* Scrollbar styling */
+.terminal-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+    background: #3e3e3e;
+    border-radius: 5px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+    background: #4e4e4e;
+}
+
+/* Command output styling */
+.command-output {
+    color: #d4d4d4;
+}
+
+.command-error {
+    color: #f48771;
+}
+
+.command-success {
+    color: #4ec9b0;
+}
+
+/* Loading indicator */
+.loading {
+    display: inline-block;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .terminal-container {
+        height: 100vh;
+        border-radius: 0;
+    }
+    
+    body {
+        padding: 0;
+    }
+}
+
