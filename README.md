@@ -92,7 +92,12 @@ After installation, you can run the web interface:
 
 3. **Open your browser** and navigate to:
    ```
-   http://localhost:5000
+   http://localhost:8080
+   ```
+   
+   **Note:** If port 8080 is in use, you can specify a different port:
+   ```bash
+   PORT=5001 python app.py
    ```
 
 4. **Use the terminal interface:**
