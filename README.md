@@ -1,188 +1,107 @@
 # SysTrack
 
-**SysTrack** is a local system diagnostic and reporting tool designed to simulate the type of lightweight monitoring and reporting scripts used by IT support teams and system administrators. It collects essential system information — CPU, memory, disk usage, and network connectivity — then outputs a structured report in both human-readable and file-based formats.
-
 ## Overview
 
-This project was built to strengthen technical fundamentals in:
-
-- **System diagnostics** - Interacting with the system through Python
-- **File I/O and data logging** - Writing and reading files programmatically
-- **Error handling and automation scripting** - Handling edge cases gracefully
-- **Command-line interface design** - Building user-friendly CLI tools
-- **Git workflow and clean project documentation** - Professional development practices
-
-SysTrack's goal is to demonstrate how automation and scripting can make IT work more efficient — the kind of tool an IT intern or junior systems engineer could realistically build and use.
+SysTrack is a lightweight system diagnostic and reporting tool designed for IT support professionals and system administrators. It provides essential insights into your system’s CPU, memory, disk usage, and network connectivity. Built as a working prototype, SysTrack aims to streamline routine system checks through automation and scripting, serving as a practical foundation for further development.
 
 ## Features
 
-✅ **System Information**
-- Collect CPU usage, memory usage, disk usage, and OS info using `psutil`
-
-✅ **Network Diagnostics**
-- Ping a known host (e.g., google.com) to verify connectivity and latency
-
-✅ **Report Generation**
-- Save all collected data into a timestamped file under `/reports`
-- Support for both text and JSON output formats
-
-✅ **Web Interface with Terminal UI**
-- Interactive terminal-like web interface
-- Type commands directly in the browser
-- Real-time system diagnostics
-- Command history with arrow keys
-
-✅ **CLI Commands** (Original)
-- Simple command flags (`--summary`, `--detailed`)
-- Optional JSON export with `--json` flag
-
-✅ **Error Handling**
-- Handle cases like no internet, missing permissions, or failed modules gracefully
+- **Comprehensive System Metrics:** Gather real-time CPU, memory, disk, and OS information using `psutil`.
+- **Network Connectivity Testing:** Perform ping tests to verify network status and latency.
+- **Flexible Reporting:** Generate timestamped reports in both human-readable text and JSON formats.
+- **Interactive Web Interface:** Access a terminal-like web UI for real-time diagnostics and command execution.
+- **Command-Line Interface:** Use simple commands and flags for quick system summaries or detailed reports.
+- **Robust Error Handling:** Gracefully manage issues like no internet connection, permission errors, and missing dependencies.
 
 ## Installation
 
-### Option 1: Using a Virtual Environment (Recommended)
+### Recommended: Virtual Environment Setup
 
-This is the recommended approach, especially on macOS with Homebrew Python:
-
-1. **Clone or download this repository**
-
-2. **Create a virtual environment:**
+1. Clone or download the repository.
+2. Create a virtual environment:
    ```bash
    python3 -m venv venv
    ```
-
-3. **Activate the virtual environment:**
-   ```bash
-   # On macOS/Linux:
-   source venv/bin/activate
-   
-   # On Windows:
-   venv\Scripts\activate
-   ```
-
-4. **Install dependencies:**
+3. Activate the virtual environment:
+   - macOS/Linux:
+     ```bash
+     source venv/bin/activate
+     ```
+   - Windows:
+     ```bash
+     venv\Scripts\activate
+     ```
+4. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
-5. **Verify installation:**
+5. Verify installation:
    ```bash
    python src/systrack.py --summary
    ```
-
-6. **When done, deactivate the virtual environment:**
+6. Deactivate when finished:
    ```bash
    deactivate
    ```
 
-## Running the Web Application
+### Alternative Installation Options
 
-After installation, you can run the web interface:
+- **User Installation:**
+  ```bash
+  pip3 install --user -r requirements.txt
+  ```
+- **Quick Setup Script (macOS/Linux):**
+  ```bash
+  chmod +x setup.sh
+  ./setup.sh
+  ```
 
-1. **Activate your virtual environment** (if not already active):
-   ```bash
-   source venv/bin/activate
-   ```
-
-2. **Start the Flask web server:**
-   ```bash
-   python app.py
-   ```
-
-3. **Open your browser** and navigate to:
-   ```
-   http://localhost:8080
-   ```
-   
-   **Note:** If port 8080 is in use, you can specify a different port:
-   ```bash
-   PORT=5001 python app.py
-   ```
-
-4. **Use the terminal interface:**
-   - Type `help` to see available commands
-   - Type `summary` for a quick system report
-   - Type `detailed` for a comprehensive report
-   - Type `ping [host]` to test network connectivity
-   - Use arrow keys to navigate command history
-   - Type `clear` to clear the terminal
-
-The web interface provides a terminal-like experience where you can interact with SysTrack directly in your browser!
-
-### Option 2: User Installation (Alternative)
-
-If you prefer not to use a virtual environment:
-
-```bash
-pip3 install --user -r requirements.txt
-```
-
-### Option 3: Quick Setup Script
-
-Run the setup script to automate the process:
-
-```bash
-# Make setup script executable (macOS/Linux)
-chmod +x setup.sh
-./setup.sh
-
-# Or run directly
-bash setup.sh
-```
-
-**Note:** On macOS with Homebrew Python, you may encounter an "externally-managed-environment" error. Using a virtual environment (Option 1) is the recommended solution.
+> **Note:** Using a virtual environment is highly recommended to avoid environment conflicts, especially on macOS with Homebrew Python.
 
 ## Usage
 
 ### Web Interface (Recommended)
 
-Start the web server and use the interactive terminal:
+Start the Flask server:
 ```bash
 python app.py
 ```
+Open your browser to `http://localhost:8080` and interact with SysTrack via the terminal-like interface. Use commands like:
 
-Then open `http://localhost:5000` in your browser.
+- `help` — List available commands
+- `summary` — Generate a quick system report
+- `detailed` — Generate a comprehensive system report
+- `ping [host]` — Test network connectivity
+- `clear` — Clear the terminal display
 
-**Available Commands:**
-- `help` - Show available commands
-- `summary` - Generate summary system report
-- `detailed` - Generate detailed system report
-- `ping [host]` - Test network connectivity
-- `clear` - Clear the terminal screen
+### Command-Line Interface
 
-### CLI Usage (Original)
+Generate reports directly from the terminal:
+
+- Summary report:
+  ```bash
+  python3 src/systrack.py --summary
+  ```
+- Detailed report:
+  ```bash
+  python3 src/systrack.py --detailed
+  ```
+- Export as JSON:
+  ```bash
+  python3 src/systrack.py --summary --json
+  ```
+- Specify output directory:
+  ```bash
+  python3 src/systrack.py --detailed --output /path/to/reports
+  ```
+- Custom ping host:
+  ```bash
+  python3 src/systrack.py --summary --host 8.8.8.8
+  ```
+
+## Example Output
 
 **Summary Report:**
-```bash
-python3 src/systrack.py --summary
-```
-
-**Detailed Report:**
-```bash
-python3 src/systrack.py --detailed
-```
-
-### Advanced CLI Options
-
-**Export as JSON:**
-```bash
-python3 src/systrack.py --summary --json
-```
-
-**Custom output directory:**
-```bash
-python3 src/systrack.py --detailed --output /path/to/reports
-```
-
-**Custom ping host:**
-```bash
-python3 src/systrack.py --summary --host 8.8.8.8
-```
-
-### Example Output
-
-**Summary Mode:**
 ```
 SysTrack Diagnostic Report - 2026-01-02
 ----------------------------------------
@@ -195,7 +114,7 @@ Network: Online (Ping google.com: 43ms)
 Report saved: reports/sysreport_2026-01-02_14-32.txt
 ```
 
-**Detailed Mode:**
+**Detailed Report:**
 ```
 SysTrack Diagnostic Report - 2026-01-02
 ----------------------------------------
@@ -237,9 +156,9 @@ systrack/
 ├── app.py                # Flask web application entry point
 ├── src/
 │   ├── systrack.py       # CLI entry point
-│   ├── system_info.py    # collects CPU, memory, disk stats
-│   ├── network_check.py  # tests network connectivity
-│   ├── report_writer.py  # saves results to /reports
+│   ├── system_info.py    # Collects CPU, memory, disk stats
+│   ├── network_check.py  # Performs network connectivity tests
+│   ├── report_writer.py  # Saves reports to /reports
 │   └── __init__.py
 ├── templates/
 │   └── index.html        # Web terminal interface
@@ -248,7 +167,7 @@ systrack/
 │   │   └── terminal.css  # Terminal styling
 │   └── js/
 │       └── terminal.js   # Terminal interaction logic
-├── reports/              # auto-generated reports
+├── reports/              # Auto-generated reports
 ├── requirements.txt
 ├── setup.sh              # Setup script (macOS/Linux)
 ├── setup.bat             # Setup script (Windows)
@@ -259,64 +178,27 @@ systrack/
 
 - **Language:** Python 3
 - **Web Framework:** Flask
-- **Libraries:**
-  - `psutil` - System stats (CPU, memory, disk)
-  - `Flask` - Web framework for terminal interface
-  - `platform` - OS info
-  - `subprocess` - Ping commands
-  - `json` - JSON file export
+- **Core Libraries:**
+  - `psutil` — System metrics (CPU, memory, disk)
+  - `platform` — Operating system details
+  - `subprocess` — Network ping commands
+  - `json` — Report serialization
 
-## Error Handling
+## Known Limitations
 
-SysTrack handles various error scenarios gracefully:
+- **Ping Accuracy:** Network latency measurements depend on the underlying OS ping utility and may vary. Results should be interpreted as approximate.
+- **Detailed Report Accuracy:** Some system information, especially platform-specific details, may not be fully accurate or available on all operating systems.
+- **Prototype Status:** SysTrack is a work in progress. Features and interfaces may change, and some edge cases are still under refinement.
+- **Permissions:** Certain metrics may require elevated permissions; lack thereof can limit data collection.
 
-- **No internet connection** - Reports network as offline with appropriate message
-- **Missing permissions** - Provides clear error messages
-- **Failed modules** - Catches and reports module import errors
-- **Ping command unavailable** - Handles missing ping utility gracefully
+## Next Steps
 
-## Learning Objectives
+- Enhance network diagnostics with multi-host ping and traceroute capabilities.
+- Improve web interface with session persistence and enhanced command history.
+- Add automated scheduling and alerting features.
+- Expand OS compatibility and detailed hardware profiling.
+- Implement comprehensive unit and integration tests.
 
-By completing this project, you will:
+---
 
-- ✅ Strengthen your confidence with Python scripting for IT tasks
-- ✅ Understand how to gather and structure system data
-- ✅ Learn how to write and read files programmatically
-- ✅ Practice error handling in real scripts
-- ✅ Get comfortable with Git feature branches and commits
-- ✅ End with a resume-ready technical project that directly maps to IT support responsibilities
-
-## Development
-
-### Running Tests
-
-To test the individual modules:
-
-```python
-# Test system info
-python3 -c "from src.system_info import get_system_info; print(get_system_info())"
-
-# Test network check
-python3 -c "from src.network_check import ping_host; print(ping_host())"
-```
-
-### Git Workflow
-
-This project follows a professional Git workflow:
-
-- Each feature (system info, network check, reporting) built in its own branch
-- Meaningful commit messages
-- Clean README with setup instructions and examples
-
-## License
-
-This project is open source and available for educational purposes.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Author
-
-Built as a learning project to demonstrate system administration automation skills.
-
+SysTrack provides a solid foundation for system monitoring and diagnostics, combining automation with ease of use. Contributions and feedback are welcome as the project evolves.
