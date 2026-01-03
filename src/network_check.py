@@ -1,7 +1,7 @@
 """
 Network Diagnostics Module
 
-Tests network connectivity by pinging a known host.
+Tests network connectivity by pinging a known host and running Ookla speedtest.
 """
 
 import subprocess
@@ -128,3 +128,113 @@ def format_network_info_detailed(network_info: Dict[str, Any]) -> str:
     
     return "\n".join(lines)
 
+
+def run_ookla_speedtest() -> Dict[str, Any]:
+    """
+    Run Ookla Speedtest to get detailed network statistics.
+    Tries to connect to the closest server in your location.
+    
+    Returns:
+        Dictionary containing download speed, upload speed, ping, and server info.
+    """
+    try:
+        import speedtest
+        
+        # Create speedtest client
+        st = speedtest.Speedtest()
+        
+        # Get list of all servers
+        st.get_servers()
+        servers = st.servers
+        
+        # Try to find closest server by distance
+        # This usually gives you a server in your actual location
+        st.get_best_server()
+        server = st.results.server
+        
+        # Get more detailed server info
+        server_id = server.get('id')
+        server_info = None
+        if server_id and servers:
+            # Find the full server details
+            for country_code, server_list in servers.items():
+                for srv in server_list:
+                    if srv.get('id') == server_id:
+                        server_info = srv
+                        break
+                if server_info:
+                    break
+        
+        # Use server_info if available, otherwise use basic server data
+        final_server = server_info if server_info else server
+        
+        # Run download test
+        download_speed = st.download() / 1_000_000  # Convert to Mbps
+        
+        # Run upload test
+        upload_speed = st.upload() / 1_000_000  # Convert to Mbps
+        
+        # Get ping from results
+        ping_ms = st.results.ping
+        
+        # Get location details
+        location = final_server.get('name', 'Unknown')
+        city = final_server.get('name', '').split(',')[0] if ',' in final_server.get('name', '') else location
+        country = final_server.get('country', server.get('country', 'Unknown'))
+        sponsor = final_server.get('sponsor', server.get('sponsor', 'Unknown'))
+        
+        return {
+            'success': True,
+            'download_mbps': round(download_speed, 2),
+            'upload_mbps': round(upload_speed, 2),
+            'ping_ms': round(ping_ms, 2),
+            'server': {
+                'name': location,
+                'city': city,
+                'sponsor': sponsor,
+                'country': country,
+                'distance': round(server.get('d', 0), 2),
+                'id': server_id
+            }
+        }
+    except ImportError:
+        return {
+            'success': False,
+            'error': 'speedtest-cli not installed. Run: pip install speedtest-cli'
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'error': f'Speedtest failed: {str(e)}'
+        }
+        
+
+
+def format_speedtest_results(speedtest_info: Dict[str, Any]) -> str:
+    """
+    Format Ookla speedtest results as a detailed string.
+    
+    Args:
+        speedtest_info: Speedtest information dictionary from run_ookla_speedtest()
+        
+    Returns:
+        Formatted detailed string.
+    """
+    if not speedtest_info.get('success'):
+        return f"Speedtest Error: {speedtest_info.get('error', 'Unknown error')}"
+    
+    server = speedtest_info['server']
+    lines = [
+        "",
+        "=== Ookla Speedtest Results ===",
+        f"Server: {server['name']}",
+        f"Provider: {server['sponsor']}",
+        f"Location: {server.get('city', server['name'])}, {server['country']}",
+        f"Distance: {server['distance']} km",
+        "",
+        f"Ping: {speedtest_info['ping_ms']} ms",
+        f"Download Speed: {speedtest_info['download_mbps']} Mbps",
+        f"Upload Speed: {speedtest_info['upload_mbps']} Mbps",
+    ]
+    
+    return "\n".join(lines)

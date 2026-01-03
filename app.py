@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from system_info import get_system_info
-from network_check import ping_host
+from network_check import ping_host, run_ookla_speedtest, format_speedtest_results
 from report_writer import format_report, save_text_report, save_json_report, generate_date_header
 
 app = Flask(__name__)
@@ -45,8 +45,7 @@ def execute_command():
         elif cmd == 'detailed':
             output = run_detailed_report()
         elif cmd == 'ping':
-            host = args[0] if args else 'google.com'
-            output = run_ping(host)
+            output = run_ping(None)
         elif cmd == 'clear' or cmd == 'cls':
             output = 'CLEAR_SCREEN'
         else:
@@ -64,13 +63,14 @@ def get_help_text():
 help, ?          - Show this help message
 summary          - Generate summary system report
 detailed         - Generate detailed system report
-ping [host]      - Test network connectivity (default: google.com)
+ping             - Run network speed test (Ookla Speedtest)
+                  Takes 30-60 seconds, shows download/upload speeds
 clear, cls       - Clear the terminal screen
 
 Examples:
   summary
   detailed
-  ping 8.8.8.8
+  ping
   clear
 """
 
@@ -106,20 +106,22 @@ def run_detailed_report():
 
 
 def run_ping(host):
-    """Run ping test and return result."""
+    """Run ping test and Ookla speedtest for detailed network diagnostics."""
     try:
-        network_info = ping_host(host)
-        if network_info['online']:
-            latency = network_info['latency_ms']
-            if latency:
-                return f"Ping {host}: {latency:.2f}ms - Online"
-            else:
-                return f"Ping {host}: Success - Online"
-        else:
-            return f"Ping {host}: {network_info['message']}"
+        result_lines = []
+        
+        # If ping succeeded, run Ookla speedtest for detailed stats
+        result_lines.append("Running network speed test...")
+        result_lines.append("This may take 30-60 seconds, please wait...")
+        result_lines.append("")
+        
+        speedtest_info = run_ookla_speedtest()
+        speedtest_output = format_speedtest_results(speedtest_info)
+        result_lines.append(speedtest_output)
+        
+        return "\n".join(result_lines)
     except Exception as e:
-        return f"Error pinging {host}: {str(e)}"
-
+        return f"Error running network diagnostics: {str(e)}"
 
 if __name__ == '__main__':
     import os
